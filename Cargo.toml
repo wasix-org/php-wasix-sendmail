@@ -1,0 +1,30 @@
+[package]
+name = "wasix-sendmail"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.86"
+lettre = { version = "0.11.7", git = "https://github.com/wasix-org/lettre.git", branch = "wasix-0.11.7", default-features = false, features = [
+    "builder",
+    "rustls-tls",
+    "smtp-transport",
+] }
+thiserror = "1.0.62"
+
+# Pin wasix-specific crate versions so patches work
+socket2 = "0.5.5"
+libc = "0.2.152"
+rustls = "0.22.2"
+ring = "0.17.7"
+
+[patch.crates-io]
+socket2 = { git = "https://github.com/wasix-org/socket2.git", branch = "v0.5.5" }
+libc = { git = "https://github.com/wasix-org/libc.git", branch = "v0.2.152" }
+rustls = { git = "https://github.com/wasix-org/rustls.git", branch = "v0.22.2" }
+ring = { git = "https://github.com/wasix-org/ring.git", branch = "0.17.7" }
