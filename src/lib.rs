@@ -110,6 +110,10 @@ fn send_mail(
     mail_to: *const c_char,
     data: *const c_char,
 ) -> Result<(), SendMailError> {
+    if std::env::var("SSL_CERT_DIR").is_err() {
+        std::env::set_var("SSL_CERT_DIR", "/openssl/ssl/certs");
+    }
+
     unsafe {
         let mut message_builder = lettre::Message::builder();
 
@@ -202,7 +206,7 @@ fn send_mail(
             .context("Host string contains invalid UTF-8 characters")?;
 
         // TLS params
-        let tls = TlsParameters::builder("sandbox.smtp.mailtrap.io".to_owned())
+        let tls = TlsParameters::builder(host.to_owned())
             .certificate_store(CertificateStore::Default)
             .build_rustls()
             .context("Failed to build certificate store")?;
